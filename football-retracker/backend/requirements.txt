@@ -1,0 +1,6 @@
+flask>=2.3.0
+flask-cors>=4.0.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+ultralytics>=8.0.0   # YOLOv8 — auto-downloads yolov8n.pt on first run
+filterpy>=1.4.5

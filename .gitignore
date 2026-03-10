@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# App data
+backend/uploads/
+backend/outputs/
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# ML models (auto-downloaded on first run)
+*.pt
+*.onnx
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
