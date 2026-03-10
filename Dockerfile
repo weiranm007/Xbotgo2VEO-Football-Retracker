@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-# Install ffmpeg and system deps
+# Install ffmpeg and all OpenCV system deps
 RUN apt-get update && apt-get install -y \
     ffmpeg \
     libglib2.0-0 \
@@ -8,23 +8,23 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libxrender-dev \
     libgomp1 \
+    libgl1-mesa-glx \
+    libglib2.0-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
 WORKDIR /app
 
-# Copy and install Python dependencies
+# Install Python deps
 COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all app files
+# Copy app
 COPY . .
 
-# Create upload/output dirs
 RUN mkdir -p backend/uploads backend/outputs
 
-# Expose port
-EXPOSE 8000
+# Smoke test — will show exact import error if any
+RUN cd backend && python -c "import app; print('startup OK')"
 
-# Start gunicorn
+EXPOSE 8000
 CMD cd backend && gunicorn --workers 1 --timeout 7200 --worker-class sync --bind 0.0.0.0:${PORT:-8000} app:app
