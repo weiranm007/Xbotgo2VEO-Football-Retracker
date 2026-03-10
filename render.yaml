@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: football-retracker
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_ENV
+        value: production
