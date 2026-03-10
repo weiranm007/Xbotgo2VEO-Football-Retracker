@@ -1,25 +1,17 @@
-# Python
 __pycache__/
-*.py[cod]
+*.pyc
+*.pyo
 .venv/
+venv/
 *.egg-info/
-
-# App data
-backend/uploads/
-backend/outputs/
+.env
+backend/uploads/*
+backend/outputs/*
+!backend/uploads/.gitkeep
+!backend/outputs/.gitkeep
+yolov8n.pt
 *.mp4
-*.avi
 *.mov
+*.avi
 *.mkv
-
-# ML models (auto-downloaded on first run)
-*.pt
-*.onnx
-
-# OS
-.DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
-.idea/
+*.mts

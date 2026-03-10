@@ -83,12 +83,13 @@ class BallDetector:
     """
 
     def __init__(self, mode="xbotgo"):
-        self.mode  = mode
-        self.model = None
-        self._prev_gray = None   # for motion-blob fallback
-        self._try_load_yolo()
+        self.mode        = mode
+        self.model       = None
+        self._prev_gray  = None   # for motion-blob fallback
+        self._yolo_tried = False  # lazy load on first use
 
     def _try_load_yolo(self):
+        self._yolo_tried = True
         try:
             from ultralytics import YOLO
             self.model = YOLO("yolov8n.pt")
@@ -103,6 +104,8 @@ class BallDetector:
 
     # ── xbotgo: original pipeline ─────────────────────────
     def _detect_xbotgo(self, frame):
+        if not self._yolo_tried:
+            self._try_load_yolo()
         if self.model:
             r = self._yolo_detect(frame, conf_thresh=0.25, upscale=1)
             if r:
@@ -111,6 +114,8 @@ class BallDetector:
 
     # ── wide_angle: tiny-ball optimised pipeline ──────────
     def _detect_wide(self, frame):
+        if not self._yolo_tried:
+            self._try_load_yolo()
         h, w = frame.shape[:2]
 
         # 1. Try YOLO on 2× upscaled frame — ball goes from ~3px to ~6px

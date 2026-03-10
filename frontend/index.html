@@ -790,10 +790,18 @@
     const urlInput = document.getElementById('backend-url');
     const proto    = window.location.protocol;
     const host     = window.location.hostname;
+    // Deployed (Railway/any host): backend is same origin — no port needed
+    // Local (file:// or localhost): backend is localhost:5000
     if (proto === 'file:' || host === 'localhost' || host === '127.0.0.1' || host === '') {
       urlInput.value = 'http://localhost:5000';
     } else {
+      // Same-origin deployment — Flask serves both frontend and API
       urlInput.value = window.location.origin;
+    }
+    // Hide the backend URL row when deployed (not useful to end users)
+    if (proto !== 'file:' && host !== 'localhost' && host !== '127.0.0.1') {
+      const row = urlInput.closest('.opt-card');
+      if (row) row.style.display = 'none';
     }
   })();
 

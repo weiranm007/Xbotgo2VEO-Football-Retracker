@@ -4,8 +4,11 @@ builder = "nixpacks"
 [build.nixpacksPlan.phases.setup]
 nixPkgs = ["ffmpeg", "python311"]
 
+[build.nixpacksPlan.phases.install]
+cmds = ["pip install -r backend/requirements.txt"]
+
 [deploy]
-startCommand = "cd backend && gunicorn --workers 1 --timeout 7200 --bind 0.0.0.0:$PORT app:app"
+startCommand = "cd backend && gunicorn --workers 1 --timeout 7200 --worker-class sync --bind 0.0.0.0:$PORT app:app"
 healthcheckPath = "/api/health"
-healthcheckTimeout = 30
+healthcheckTimeout = 120
 restartPolicyType = "on_failure"

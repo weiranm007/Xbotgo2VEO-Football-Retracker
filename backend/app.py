@@ -53,6 +53,25 @@ def _save_upload(file_obj, job_id, suffix=""):
     return str(dest)
 
 
+# Absolute path to frontend folder (works regardless of working directory)
+FRONTEND_DIR = Path(__file__).parent.parent / "frontend"
+
+@app.route("/")
+def index():
+    return send_file(str(FRONTEND_DIR / "index.html"))
+
+@app.route("/<path:filename>")
+def static_files(filename):
+    safe = FRONTEND_DIR / filename
+    if safe.exists():
+        return send_file(str(safe))
+    return jsonify({"error": "not found"}), 404
+
+@app.route("/api/health")
+def health():
+    return jsonify({"status": "ok", "version": "1.0.0"})
+
+
 @app.route("/api/upload", methods=["POST"])
 def upload():
     source_mode = request.form.get("source_mode", "xbotgo")
