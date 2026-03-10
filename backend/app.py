@@ -30,13 +30,6 @@ VALID_EXTS = {".mp4", ".mov", ".avi", ".mkv", ".mts", ".m2ts"}
 jobs = {}
 
 
-@app.route("/")
-def index():
-    """Serve the frontend."""
-    frontend = Path(__file__).parent.parent / "frontend" / "index.html"
-    return send_file(str(frontend))
-
-
 def _save_upload(file_obj, job_id, suffix=""):
     ext = Path(file_obj.filename).suffix.lower()
     if ext not in VALID_EXTS:
