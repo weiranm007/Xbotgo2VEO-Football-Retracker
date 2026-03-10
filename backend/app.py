@@ -156,10 +156,6 @@ def download(job_id):
     return send_file(job["output_path"], as_attachment=True, download_name="retracked.mp4")
 
 
-@app.route("/api/health")
-def health():
-    return jsonify({"status": "ok"})
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)
